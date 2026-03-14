@@ -2,88 +2,107 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>ОСОЗНАТЬ ВКУС</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENCHA | AWARENESS</title>
     <style>
-        /* Это CSS - "кожа" твоего сайта */
         body {
-            background-color: #000; /* Истинный черный */
-            color: #d1d1d1; /* Серебряный текст */
-            font-family: 'Times New Roman', serif;
+            background: #050505;
+            color: #d1d1d1;
+            font-family: 'Courier New', monospace;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
-            text-transform: uppercase;
+            overflow-x: hidden;
+        }
+
+        /* Анимация пара на фоне */
+        .steam {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            filter: blur(50px);
+            animation: drift 10s infinite alternate;
+            z-index: -1;
+        }
+
+        @keyframes drift {
+            from { transform: translate(-10%, -10%); }
+            to { transform: translate(10%, 10%); }
         }
 
         h1 {
-            font-size: 60px;
+            font-size: 3rem;
             letter-spacing: 15px;
-            font-weight: normal;
-            margin-bottom: 20px;
+            margin-top: 10vh;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255,255,255,0.3);
         }
 
-        .line {
-            width: 400px;
-            height: 1px;
-            background-color: #333;
-            margin: 25px 0;
+        .content {
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid #333;
+            padding: 40px;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
         }
 
-        p {
-            font-size: 14px;
-            letter-spacing: 2px;
-            margin: 10px 0;
-        }
-
-        .stats {
-            display: flex;
-            gap: 60px;
-            font-size: 12px;
-            margin-top: 20px;
-        }
-
-        button {
+        .timer-btn {
             background: none;
-            border: 1px solid #d1d1d1;
-            color: #d1d1d1;
-            padding: 15px 50px;
-            margin-top: 50px;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 15px 30px;
             cursor: pointer;
-            transition: 0.3s; /* Плавность 144 Гц */
+            margin-top: 30px;
+            transition: 0.5s;
         }
 
-        button:hover {
-            background-color: #d1d1d1;
+        .timer-btn:hover {
+            background: #fff;
             color: #000;
+            box-shadow: 0 0 30px #fff;
         }
+
+        #countdown { font-size: 2rem; margin-top: 20px; display: none; }
     </style>
 </head>
 <body>
-
-    <h1>СЕНЧА</h1>
-
-    <div class="line"></div>
-
-    <p><i>Бережный паровой прогрев листьев</i></p>
-    <p>100% натуральный продукт</p>
-    <p>Сбор первой страды</p>
-
-    <div class="line"></div>
-
-    <div class="stats">
-        <div>КРЕПОСТЬ: ●●○</div>
-        <div>РЕГИОН: СИДЗУОКА</div>
-    </div>
+    <div class="steam"></div>
     
-    <div class="stats" style="margin-top: 10px;">
-        <div>ТЕМП: 80°C</div>
-        <div>ВРЕМЯ: 90 СЕК</div>
+    <h1>СЕНЧА</h1>
+    
+    <div class="content">
+        <p><i>СБОР ПЕРВОЙ СТРАДЫ. СИДЗУОКА.</i></p>
+        <div style="height: 1px; background: #444; margin: 20px 0;"></div>
+        <p>Этот чай был обработан паром, чтобы остановить время и сохранить вкус. Как и ты сейчас — остановись и осознай.</p>
+        <div class="origin-info" style="margin-top: 30px; text-align: left; font-size: 12px; border-left: 1px solid #555; padding-left: 15px;">
+    <p style="color: #777;">[ DATA ] ORIGIN: SHIZUOKA, JAPAN</p>
+    <p>Чай выращен у подножия горы Фудзи. Сидзуока поставляет 40% всего японского чая. Уникальный климат и вулканическая почва создают "холодный и серебряный" вкус первой страды.</p>
+    <p><i>Метод "Фукамуси" (глубокий пар) останавливает ферментацию за секунды.</i></p>
+</div>
+
+
+        <button class="timer-btn" onclick="startTimer()">РИТУАЛ ЗАВАРИВАНИЯ</button>
+        <div id="countdown">90s</div>
     </div>
 
-    <button>ОСОЗНАТЬ ВКУС</button>
-
+    <script>
+        function startTimer() {
+            let time = 90;
+            const display = document.getElementById('countdown');
+            display.style.display = 'block';
+            const interval = setInterval(() => {
+                time--;
+                display.innerText = time + 's';
+                if (time <= 0) {
+                    clearInterval(interval);
+                    display.innerText = "ОСОЗНАНО";
+                    alert("Твой чай готов.");
+                }
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
