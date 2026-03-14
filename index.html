@@ -3,75 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frostweave Tea | Осознанность в каждом глотке</title>
+    <title>СЕНЧА | Традиция и Качество</title>
     <style>
-        :root {
-            --bg-color: #0d1117;
-            --accent-color: #58a6ff; /* Серебряно-голубой под твой вайб */
-            --text-color: #c9d1d9;
-        }
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
             margin: 0;
+            background: #1a1c1a url('https://w.forfun.com') no-repeat center center fixed;
+            background-size: cover;
+            color: #e0e0e0;
+            font-family: 'Garamond', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* Туманный фильтр */
+            z-index: 1;
+        }
+        .content {
+            position: relative;
+            z-index: 2;
             text-align: center;
+            max-width: 450px;
+            padding: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(10px); /* Эффект матового стекла */
         }
-        .container {
-            max-width: 400px;
-            padding: 20px;
-            border: 1px solid #30363d;
-            border-radius: 12px;
-            background: rgba(22, 27, 34, 0.8);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        h1 {
+            font-size: 3rem;
+            letter-spacing: 10px;
+            margin: 0;
+            color: #d4d4d4;
+            text-transform: uppercase;
+            border-bottom: 1px solid #4a5d4a;
+            display: inline-block;
+            padding-bottom: 10px;
         }
-        h1 { color: var(--accent-color); letter-spacing: 2px; text-transform: uppercase; }
-        p { line-height: 1.6; font-size: 0.9rem; }
-        .stats {
+        .description {
+            font-style: italic;
+            line-height: 1.8;
+            margin: 30px 0;
+            font-size: 1.1rem;
+            color: #a0a0a0;
+        }
+        .info-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 20px 0;
+            gap: 15px;
             font-size: 0.8rem;
-            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-top: 1px solid #333;
+            padding-top: 20px;
         }
         .btn {
+            margin-top: 40px;
             display: inline-block;
-            padding: 10px 20px;
-            border: 1px solid var(--accent-color);
-            color: var(--accent-color);
+            padding: 12px 30px;
+            border: 1px solid #d4d4d4;
+            color: #d4d4d4;
             text-decoration: none;
-            border-radius: 6px;
-            transition: 0.3s;
+            transition: 0.4s;
         }
-        .btn:hover { background: var(--accent-color); color: var(--bg-color); }
-        .footer { margin-top: 30px; font-size: 0.7rem; opacity: 0.5; }
+        .btn:hover { background: #d4d4d4; color: #1a1c1a; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Frostweave Tea</h1>
-        <p>Ты отсканировал код. Теперь ты <b>Aware</b>. Этот чай создан для тех, кто ищет свободу в лабиринте будней.</p>
-        
-        <div class="stats">
-            <div>УРОВЕНЬ: 100%</div>
-            <div>ТИП: FROSTWEAVE</div>
-            <div>СТАТУС: CONSCIOUS</div>
-            <div>ЭФФЕКТ: REBOOT</div>
+    <div class="overlay"></div>
+    <div class="content">
+        <h1>СЕНЧА</h1>
+        <p class="description">
+            Бережный паровой прогрев листьев.<br>
+            100% натуральный продукт.<br>
+            Сбор первой страды.
+        </p>
+        <div class="info-grid">
+            <div>Крепость: ●●○</div>
+            <div>Регион: Сидзуока</div>
+            <div>Темп: 80°C</div>
+            <div>Время: 90 сек</div>
         </div>
-
-        <p>"Твой путь только начинается. Сделай глоток и начни свой собственный Рамблинг."</p>
-        
-        <a href="#" class="btn">УЗНАТЬ БОЛЬШЕ</a>
-        
-        <div class="footer">
-            Designed by Frostweave Slayer | 2026
-        </div>
+        <a href="#" class="btn">ОСОЗНАТЬ ВКУС</a>
     </div>
 </body>
 </html>
+
