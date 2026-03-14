@@ -2,92 +2,88 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>СЕНЧА | Традиция и Качество</title>
+    <title>ОСОЗНАТЬ ВКУС</title>
     <style>
+        /* Это CSS - "кожа" твоего сайта */
         body {
-            margin: 0;
-            background: #1a1c1a url('https://w.forfun.com') no-repeat center center fixed;
-            background-size: cover;
-            color: #e0e0e0;
-            font-family: 'Garamond', serif;
+            background-color: #000; /* Истинный черный */
+            color: #d1d1d1; /* Серебряный текст */
+            font-family: 'Times New Roman', serif;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-        }
-        .overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); /* Туманный фильтр */
-            z-index: 1;
-        }
-        .content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            max-width: 450px;
-            padding: 40px;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(20, 20, 20, 0.8);
-            backdrop-filter: blur(10px); /* Эффект матового стекла */
-        }
-        h1 {
-            font-size: 3rem;
-            letter-spacing: 10px;
+            justify-content: center;
+            height: 100vh;
             margin: 0;
-            color: #d4d4d4;
             text-transform: uppercase;
-            border-bottom: 1px solid #4a5d4a;
-            display: inline-block;
-            padding-bottom: 10px;
         }
-        .description {
-            font-style: italic;
-            line-height: 1.8;
-            margin: 30px 0;
-            font-size: 1.1rem;
-            color: #a0a0a0;
+
+        h1 {
+            font-size: 60px;
+            letter-spacing: 15px;
+            font-weight: normal;
+            margin-bottom: 20px;
         }
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
+
+        .line {
+            width: 400px;
+            height: 1px;
+            background-color: #333;
+            margin: 25px 0;
+        }
+
+        p {
+            font-size: 14px;
             letter-spacing: 2px;
-            border-top: 1px solid #333;
-            padding-top: 20px;
+            margin: 10px 0;
         }
-        .btn {
-            margin-top: 40px;
-            display: inline-block;
-            padding: 12px 30px;
-            border: 1px solid #d4d4d4;
-            color: #d4d4d4;
-            text-decoration: none;
-            transition: 0.4s;
+
+        .stats {
+            display: flex;
+            gap: 60px;
+            font-size: 12px;
+            margin-top: 20px;
         }
-        .btn:hover { background: #d4d4d4; color: #1a1c1a; }
+
+        button {
+            background: none;
+            border: 1px solid #d1d1d1;
+            color: #d1d1d1;
+            padding: 15px 50px;
+            margin-top: 50px;
+            cursor: pointer;
+            transition: 0.3s; /* Плавность 144 Гц */
+        }
+
+        button:hover {
+            background-color: #d1d1d1;
+            color: #000;
+        }
     </style>
 </head>
 <body>
-    <div class="overlay"></div>
-    <div class="content">
-        <h1>СЕНЧА</h1>
-        <p class="description">
-            Бережный паровой прогрев листьев.<br>
-            100% натуральный продукт.<br>
-            Сбор первой страды.
-        </p>
-        <div class="info-grid">
-            <div>Крепость: ●●○</div>
-            <div>Регион: Сидзуока</div>
-            <div>Темп: 80°C</div>
-            <div>Время: 90 сек</div>
-        </div>
-        <a href="#" class="btn">ОСОЗНАТЬ ВКУС</a>
+
+    <h1>СЕНЧА</h1>
+
+    <div class="line"></div>
+
+    <p><i>Бережный паровой прогрев листьев</i></p>
+    <p>100% натуральный продукт</p>
+    <p>Сбор первой страды</p>
+
+    <div class="line"></div>
+
+    <div class="stats">
+        <div>КРЕПОСТЬ: ●●○</div>
+        <div>РЕГИОН: СИДЗУОКА</div>
     </div>
+    
+    <div class="stats" style="margin-top: 10px;">
+        <div>ТЕМП: 80°C</div>
+        <div>ВРЕМЯ: 90 СЕК</div>
+    </div>
+
+    <button>ОСОЗНАТЬ ВКУС</button>
+
 </body>
 </html>
-
