@@ -2,71 +2,67 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SENCHA | AWARENESS</title>
-body {
-    <div class="steam-overlay"></div>
-    background: #050505 url('bg.jpg') no-repeat center center fixed; /* bg.jpg - имя твоей картинки */
-    background-size: cover;
-    color: #d1d1d1;
-    font-family: 'Courier New', monospace;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    overflow: hidden; /* Чтобы дым не создавал прокрутку */
-}
+    <style>
+        /* Весь CSS должен быть ТУТ */
+        body {
+            background: #050505 url('bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #d1d1d1;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+        }
 
-/* Эффект Дыма (Steam) */
-.steam-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: 
-        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05), transparent 50%),
-        radial-gradient(circle at 20% 80%, rgba(255,255,255,0.02), transparent 40%);
-    filter: blur(60px);
-    z-index: -1;
-    animation: smokeMove 15s infinite alternate ease-in-out;
-}
+        /* Затемнение, чтобы текст читался поверх Фудзи */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); 
+            z-index: -2;
+        }
 
-@keyframes smokeMove {
-    0% { transform: scale(1) translate(0, 0); opacity: 0.3; }
-    50% { transform: scale(1.2) translate(5%, -5%); opacity: 0.6; }
-    100% { transform: scale(1) translate(-5%, 5%); opacity: 0.3; }
-}
+        .steam-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05), transparent 50%);
+            filter: blur(60px);
+            z-index: -1;
+            animation: smokeMove 15s infinite alternate ease-in-out;
+        }
 
-/* Затемнение фона, чтобы текст читался */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.7); /* Регулируй прозрачность тут */
-    z-index: -2;
-}
+        @keyframes smokeMove {
+            0% { transform: scale(1); opacity: 0.3; }
+            100% { transform: scale(1.2); opacity: 0.6; }
+        }
 
-
-        #countdown { font-size: 2rem; margin-top: 20px; display: none; }
+        .content { max-width: 500px; padding: 40px; margin-top: 10vh; }
+        h1 { font-size: 3rem; letter-spacing: 15px; color: #fff; }
+        .timer-btn { background: none; border: 1px solid #fff; color: #fff; padding: 15px 30px; cursor: pointer; margin-top: 30px; transition: 0.5s; }
+        .timer-btn:hover { background: #fff; color: #000; box-shadow: 0 0 20px #fff; }
     </style>
 </head>
 <body>
-    <div class="steam"></div>
-    
-    <h1>СЕНЧА</h1>
-    
+    <div class="steam-overlay"></div>
     <div class="content">
-        <p><i>СБОР ПЕРВОЙ СТРАДЫ. СИДЗУОКА.</i></p>
-        <div style="height: 1px; background: #444; margin: 20px 0;"></div>
+        <h1>СЕНЧА</h1>
+        <p>СБОР ПЕРВОЙ СТРАДЫ. СИДЗУОКА.</p>
+        <hr style="border: 0.5px solid #444; margin: 20px 0;">
         <p>Этот чай был обработан паром, чтобы остановить время и сохранить вкус. Как и ты сейчас — остановись и осознай.</p>
-        <div class="origin-info" style="margin-top: 30px; text-align: left; font-size: 12px; border-left: 1px solid #555; padding-left: 15px;">
-    <p style="color: #777;">[ DATA ] ORIGIN: SHIZUOKA, JAPAN</p>
-    <p>Чай выращен у подножия горы Фудзи. Сидзуока поставляет 40% всего японского чая. Уникальный климат и вулканическая почва создают "холодный и серебряный" вкус первой страды.</p>
-    <p><i>Метод "Фукамуси" (глубокий пар) останавливает ферментацию за секунды.</i></p>
-</div>
-
+        
+        <div style="text-align: left; font-size: 12px; border-left: 1px solid #555; padding-left: 15px; margin: 20px 0;">
+            <p style="color: #777;">[ DATA ] ORIGIN: SHIZUOKA, JAPAN</p>
+            <p>Чай выращен у подножия горы Фудзи. Метод "Фукамуси" останавливает ферментацию за секунды.</p>
+        </div>
 
         <button class="timer-btn" onclick="startTimer()">РИТУАЛ ЗАВАРИВАНИЯ</button>
-        <div id="countdown">90s</div>
+        <div id="countdown" style="font-size: 2rem; margin-top: 20px; display: none;">90s</div>
     </div>
 
     <script>
@@ -74,16 +70,12 @@ body::before {
             let time = 90;
             const display = document.getElementById('countdown');
             display.style.display = 'block';
-            const interval = setInterval(() => {
-                time--;
-                display.innerText = time + 's';
-                if (time <= 0) {
-                    clearInterval(interval);
-                    display.innerText = "ГОТОВО!";
-                    alert("Твой чай готов.");
-                }
+            setInterval(() => {
+                if (time > 0) { time--; display.innerText = time + 's'; }
+                else { display.innerText = "ОСОЗНАНО"; }
             }, 1000);
         }
     </script>
 </body>
 </html>
+
