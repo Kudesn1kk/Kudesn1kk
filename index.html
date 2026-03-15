@@ -16,12 +16,12 @@
             min-height: 100vh; overflow-x: hidden;
         }
 
-        /* ЗАТЕМНЕНИЕ (Теперь оно не блокирует клики) */
+        /* ЗАТЕМНЕНИЕ ФОНА (НЕ БЛОКИРУЕТ КЛИКИ) */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.4); 
             z-index: 1; 
-            pointer-events: none; /* МАГИЧЕСКАЯ СТРОКА: КЛИКИ ПРОХОДЯТ СКВОЗЬ */
+            pointer-events: none; /* ГЛАВНЫЙ ФИКС ДЛЯ КНОПОК */
         }
 
         h1 {
@@ -51,12 +51,12 @@
         #slide-title { font-size: 1.3rem; margin-bottom: 10px; color: #2b1d14; font-weight: bold; border-bottom: 1px solid rgba(0,0,0,0.1); display: inline-block; }
         #slide-text { font-size: 0.9rem; line-height: 1.6; color: #3e2723; font-style: italic; }
 
-        /* СТРЕЛКИ (Прямо поверх всего) */
+        /* СТРЕЛКИ (Z-INDEX 9999) */
         .arrow {
             position: absolute; top: 50%; transform: translateY(-50%);
-            background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.5);
             color: #fff; font-size: 2.5rem; cursor: pointer;
-            z-index: 100; /* ВЫШЕ ВСЕХ */
+            z-index: 9999; /* ВЫШЕ ВСЕХ СЛОЕВ */
             width: 50px; height: 50px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             transition: 0.3s; backdrop-filter: blur(5px);
@@ -67,7 +67,7 @@
 
         /* КНОПКА РИТУАЛА */
         .timer-btn {
-            position: relative; z-index: 100; /* ВЫШЕ ВСЕХ */
+            position: relative; z-index: 9999;
             background: none; border: 1px solid #fff; color: #fff;
             padding: 15px 40px; cursor: pointer; margin-top: 30px;
             letter-spacing: 5px; font-size: 0.9rem; transition: 0.5s;
@@ -75,7 +75,7 @@
         }
         .timer-btn:hover { background: #fff; color: #000; box-shadow: 0 0 30px #fff; }
 
-        #countdown { font-size: 3rem; color: #fff; margin-top: 20px; font-weight: 200; letter-spacing: 10px; position: relative; z-index: 100; }
+        #countdown { font-size: 3rem; color: #fff; margin-top: 20px; font-weight: 200; letter-spacing: 10px; position: relative; z-index: 9999; }
     </style>
 </head>
 <body>
