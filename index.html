@@ -3,174 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SENCHA | AWARENESS</title>
+    <title>SENCHA | THE SPIRIT</title>
     <style>
         @import url('https://fonts.googleapis.com');
 
         /* БАЗА И ФОН */
         body {
-            background: #000 url('bg.jpg') no-repeat center center fixed;
+            background: #0a0f0a url('bg.jpg') no-repeat center center fixed;
             background-size: cover;
-            color: #e0e0e0;
-            font-family: 'Noto Serif JP', serif;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
             margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
             overflow-x: hidden;
-            text-align: center;
+            text-transform: uppercase;
         }
 
-        /* ЯПОНСКИЙ ВАЙБ НА ФОНЕ */
+        /* КОМИКСНАЯ СЕТКА И ЗАТЕМНЕНИЕ */
         body::before {
-            content: "煎茶";
-            position: fixed;
-            top: 5%; right: 5%;
-            font-size: clamp(5rem, 20vw, 15rem);
-            color: rgba(255, 255, 255, 0.03);
-            z-index: -1;
-            writing-mode: vertical-rl;
-            pointer-events: none;
-        }
-
-        /* ЗАТЕМНЕНИЕ ЛАНДШАФТА */
-        body::after {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8));
-            z-index: -2;
-        }
-
-        /* ЭФФЕКТ ПАРА / ДЫМА */
-        .steam-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 120%, rgba(255,255,255,0.1), transparent 60%);
-            filter: blur(60px); z-index: -1; 
-            animation: steamFloat 12s infinite alternate ease-in-out;
-            pointer-events: none;
-        }
-        @keyframes steamFloat { 
-            0% { opacity: 0.3; transform: scale(1); } 
-            100% { opacity: 0.6; transform: scale(1.1) translateY(-2%); } 
-        }
-
-        .container {
-            width: 95%; max-width: 750px; padding: 20px;
-            margin-top: 5vh; z-index: 10;
+            background: radial-gradient(circle, transparent 20%, #000 90%), 
+                        url('https://www.transparenttextures.com');
+            opacity: 0.8; z-index: -2;
         }
 
         h1 {
-            font-size: clamp(2rem, 10vw, 3.5rem);
-            letter-spacing: clamp(10px, 4vw, 25px);
-            margin-bottom: 20px;
-            font-weight: 200;
-            color: #fff;
-            text-transform: uppercase;
+            font-family: 'Bangers', cursive;
+            font-size: clamp(3rem, 12vw, 6.5rem);
+            color: #00ff64;
+            text-shadow: 5px 5px 0px #000, 0 0 25px rgba(0, 255, 100, 0.6);
+            margin: 30px 0 10px 0;
+            transform: rotate(-3deg);
         }
 
-        /* СЛАЙДЕР СО СКРУЧЕННОЙ БУМАГОЙ */
-        .slider-container { position: relative; width: 100%; margin: 20px 0; perspective: 1200px; }
+        /* КОНТЕЙНЕР СЛАЙДЕРА */
+        .slider-container { 
+            position: relative; 
+            width: 90%; 
+            max-width: 700px; 
+            margin: 20px auto; 
+            z-index: 10;
+        }
 
+        /* КАМЕННАЯ ПЛИТА (REMNANT) */
         #scroll-page {
-            background: url('scroll.png') no-repeat center;
-            background-size: contain;
-            min-height: clamp(350px, 60vh, 500px);
-            /* ОТСТУПЫ: 25% по бокам, чтобы текст не заходил на "завороты" бумаги */
-            padding: 10% 25%;
-            display: flex; flex-direction: column; justify-content: center;
-            
-            /* ЦВЕТ ТЕКСТА: ТЕМНАЯ ТУШЬ */
-            color: #2b231d;
-            text-shadow: 0.3px 0.3px 0px rgba(255,255,255,0.2);
-            transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s;
-            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8));
+            background: url('stone.png') no-repeat center;
+            background-size: 100% 100%;
+            min-height: 450px;
+            padding: 60px 18%; /* ОТСТУПЫ: чтобы текст сидел внутри плиты */
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center;
+            text-align: center;
+            box-sizing: border-box;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
         }
 
-        #slide-title { font-size: clamp(1rem, 4vw, 1.4rem); margin-bottom: 10px; font-weight: 700; letter-spacing: 1px; }
-        #slide-text { font-size: clamp(0.8rem, 3vw, 1rem); line-height: 1.6; font-weight: 400; font-style: italic; }
+        #slide-title { 
+            font-size: clamp(1.2rem, 5vw, 1.6rem); 
+            color: #00ff64; 
+            margin-bottom: 15px; 
+            border-bottom: 2px solid rgba(0, 255, 100, 0.5);
+            display: inline-block;
+            text-shadow: 2px 2px 0px #000;
+        }
 
-        /* МИНИМАЛИСТИЧНЫЕ СТРЕЛКИ */
+        #slide-text { 
+            font-size: clamp(0.85rem, 3vw, 1rem); 
+            line-height: 1.5; 
+            color: #fff; 
+            font-weight: 900;
+            text-shadow: 1px 1px 2px #000;
+            text-transform: none; /* Читабельный текст без капса */
+        }
+
+        /* СТРЕЛКИ (FIXED) */
         .arrow {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            background: none; border: none; color: #fff; font-size: 3rem;
-            cursor: pointer; z-index: 20; opacity: 0.3; transition: 0.4s;
+            position: absolute; 
+            top: 50%; 
+            transform: translateY(-50%);
+            background: #00ff64; 
+            border: 4px solid #000; 
+            color: #000; 
+            font-family: 'Bangers';
+            font-size: 2rem; 
+            cursor: pointer; 
+            z-index: 100; 
+            padding: 5px 15px;
+            box-shadow: 6px 6px 0px #000; 
+            transition: 0.2s;
             user-select: none;
         }
-        .arrow:hover { opacity: 1; transform: translateY(-50%) scale(1.2); text-shadow: 0 0 20px #fff; }
-        .prev { left: -10px; } .next { right: -10px; }
+        .arrow:hover { background: #fff; transform: translateY(-50%) scale(1.1); box-shadow: 3px 3px 0px #000; }
+        .prev { left: -30px; } 
+        .next { right: -30px; }
 
-        /* КНОПКА РИТУАЛА */
+        /* КНОПКА ТАЙМЕРА */
         .timer-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: #fff;
-            padding: 18px 40px;
-            cursor: pointer;
-            margin-top: 20px;
-            letter-spacing: 5px;
-            font-size: 0.8rem;
-            transition: 0.5s;
-            backdrop-filter: blur(5px);
-            text-transform: uppercase;
+            background: #00ff64; border: 5px solid #000; color: #000;
+            padding: 18px 40px; cursor: pointer; margin-top: 20px;
+            font-family: 'Bangers'; font-size: 1.8rem; letter-spacing: 2px;
+            box-shadow: 10px 10px 0px #000; width: 100%; max-width: 320px;
+            transition: 0.2s;
         }
+        .timer-btn:hover { background: #fff; transform: translate(-4px, -4px); box-shadow: 14px 14px 0px #000; }
 
-        .timer-btn:hover {
-            background: rgba(255,255,255,0.15);
-            border-color: #fff;
-            box-shadow: 0 0 30px rgba(255,255,255,0.1);
-            letter-spacing: 8px;
-        }
-
-        #countdown { font-size: 3rem; margin-top: 20px; font-weight: 200; letter-spacing: 10px; }
+        #countdown { font-family: 'Bangers'; font-size: 4rem; color: #00ff64; margin-top: 10px; text-shadow: 4px 4px 0px #000; }
     </style>
 </head>
 <body>
-    <div class="steam-overlay"></div>
-    
-    <div class="container">
-        <h1>СЕНЧА</h1>
+    <h1>SENCHA AWARE</h1>
 
-        <div class="slider-container">
-            <button class="arrow prev" onclick="changeSlide(-1)">‹</button>
-            <button class="arrow next" onclick="changeSlide(1)">›</button>
-            <div id="scroll-page">
-                <h3 id="slide-title">РИТУАЛ: ВКУС</h3>
-                <p id="slide-text">Сенча первой страды имеет баланс сладости и терпкости. Это вкус 'Умами', который нужно осознать.</p>
-            </div>
+    <div class="slider-container">
+        <button class="arrow prev" onclick="changeSlide(-1)">‹</button>
+        <button class="arrow next" onclick="changeSlide(1)">›</button>
+        <div id="scroll-page">
+            <h3 id="slide-title">ORIGIN: SHIZUOKA</h3>
+            <p id="slide-text">Чай выращен у подножия горы Фудзи. Вулканическая почва и туманы создают 'серебряный' вкус первой страды.</p>
         </div>
-
-        <button class="timer-btn" onclick="startTimer()">РИТУАЛ ЗАВАРИВАНИЯ</button>
-        <div id="countdown" style="display: none;">90s</div>
     </div>
+
+    <button class="timer-btn" onclick="startTimer()">START BREWING</button>
+    <div id="countdown" style="display: none;">90S</div>
 
     <script>
         const slides =;
-        let cur = 2;
+
+        let cur = 0;
+
         function changeSlide(d) {
             cur = (cur + d + slides.length) % slides.length;
             const p = document.getElementById('scroll-page');
+            
+            // Эффект перехода (Комиксный наклон)
             p.style.opacity = 0;
-            p.style.transform = "rotateY(20deg) scale(0.95)";
+            p.style.transform = "scale(0.9) skewX(10deg)";
+            
             setTimeout(() => {
                 document.getElementById('slide-title').innerText = slides[cur].title;
                 document.getElementById('slide-text').innerText = slides[cur].text;
                 p.style.opacity = 1;
-                p.style.transform = "rotateY(0deg) scale(1)";
-            }, 450);
+                p.style.transform = "scale(1) skewX(0deg)";
+            }, 250);
         }
+
         function startTimer() {
             let t = 90;
             const d = document.getElementById('countdown');
             d.style.display = 'block';
             const i = setInterval(() => {
-                t--; d.innerText = t + 's';
-                if (t <= 0) { clearInterval(i); d.innerText = "ОСОЗНАНО"; }
+                t--; d.innerText = t + "S";
+                if (t <= 0) { clearInterval(i); d.innerText = "DONE"; }
             }, 1000);
         }
     </script>
 </body>
 </html>
-
 
 
 
