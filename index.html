@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SENCHA | ZEN</title>
     <style>
         @import url('https://fonts.googleapis.com');
@@ -10,111 +10,111 @@
         body {
             background: #0a0a0a url('bg.jpg') no-repeat center center fixed;
             background-size: cover;
-            color: #fff;
-            font-family: 'Noto Serif JP', serif;
+            color: #fff; font-family: 'Noto Serif JP', serif;
             margin: 0; display: flex; flex-direction: column; align-items: center;
             min-height: 100vh; overflow: hidden;
             opacity: 0; animation: pageIn 1.5s forwards;
+            touch-action: none;
         }
 
         @keyframes pageIn { to { opacity: 1; } }
 
-        /* ГЛУБОКОЕ ЗАТЕМНЕНИЕ */
+        /* ЖИВОЙ ТУМАН */
+        #fog-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2; pointer-events: none; opacity: 0.5; /* Сделал чуть мягче */
+        }
+
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); z-index: 1; pointer-events: none;
+            background: rgba(0, 0, 0, 0.6); z-index: 1; transition: background 2s ease;
         }
 
-        .fog {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 30%;
-            background: linear-gradient(to top, rgba(255,255,255,0.1), transparent);
-            z-index: 2; pointer-events: none;
-        }
+        body.ritual-active::before { background: rgba(0, 0, 0, 0.85); }
 
         h1 {
-            font-size: clamp(2.5rem, 8vw, 5rem); letter-spacing: clamp(10px, 3vw, 20px);
+            font-size: clamp(2.2rem, 8vw, 5rem); letter-spacing: clamp(10px, 3vw, 20px);
             margin: 40px 0 20px; font-weight: 200; position: relative; z-index: 10;
-            text-transform: uppercase; text-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            text-transform: uppercase; text-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
-        /* КОНТЕЙНЕР ДЛЯ ЛИСТАНИЯ */
         .slider-viewport {
             width: 95%; max-width: 700px; position: relative; z-index: 100;
-            perspective: 1200px; /* Добавляем глубину */
+            perspective: 1200px;
         }
 
-        /* ВЕСЬ СВИТОК КАК ЕДИНЫЙ ОБЪЕКТ */
         #scroll-page {
             background: url('scroll.png') no-repeat center;
             background-size: 100% 100%;
             min-height: clamp(350px, 55vh, 500px);
-            padding: 80px 18%;
-            display: flex; flex-direction: column; justify-content: center;
-            text-align: center; color: #2b1d14; /* Темный текст внутри */
-            box-sizing: border-box;
+            padding: 80px 18%; display: flex; flex-direction: column; justify-content: center;
+            text-align: center; color: #2b1d14; box-sizing: border-box;
             transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease;
             filter: drop-shadow(0 20px 40px rgba(0,0,0,0.7));
-            will-change: transform, opacity;
+            will-change: transform;
         }
 
-        /* СОСТОЯНИЯ ДЛЯ АНИМАЦИИ (ВЕСЬ БЛОК УЛЕТАЕТ) */
+        body.ritual-active #scroll-page { animation: scrollPulse 4s infinite ease-in-out; }
+
+        @keyframes scrollPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        /* СОСТОЯНИЯ ЛИСТАНИЯ */
         .slide-left { transform: translateX(-120%) rotateY(20deg); opacity: 0; }
         .slide-right { transform: translateX(120%) rotateY(-20deg); opacity: 0; }
         .slide-prepare-left { transform: translateX(120%) rotateY(-20deg); opacity: 0; }
         .slide-prepare-right { transform: translateX(-120%) rotateY(20deg); opacity: 0; }
 
-        #slide-title { 
-            font-size: clamp(1.1rem, 4vw, 1.5rem); font-weight: 700; margin-bottom: 15px;
-            border-bottom: 1px solid rgba(0,0,0,0.1); display: inline-block; padding-bottom: 5px;
-        }
+        #slide-title { font-size: clamp(1.1rem, 4vw, 1.4rem); font-weight: 700; margin-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.1); display: inline-block; padding-bottom: 5px; }
+        #slide-text { font-size: clamp(0.85rem, 3.5vw, 1.05rem); line-height: 1.6; font-style: italic; margin: 0; }
 
-        #slide-text { 
-            font-size: clamp(0.9rem, 3.5vw, 1.1rem); line-height: 1.7; font-style: italic; margin: 0;
-        }
-
-        /* КНОПКИ */
+        /* СТРЕЛКИ — ТЕПЕРЬ ПРИЗРАЧНЫЕ */
         .arrow {
-            position: absolute; top: 50%; width: 55px; height: 55px;
-            background: rgba(255,255,255,0.9); border: none; color: #000;
-            font-size: 2rem; cursor: pointer; z-index: 1000; border-radius: 50%;
+            position: absolute; top: 50%; width: 50px; height: 50px;
+            background: rgba(255,255,255,0.05); /* Почти прозрачные */
+            border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.4); 
+            font-size: 1.8rem; cursor: pointer; z-index: 1000; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            transition: 0.3s; backdrop-filter: blur(5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            transition: all 0.4s ease; backdrop-filter: blur(2px);
+            -webkit-tap-highlight-color: transparent;
         }
-        .arrow:hover { background: #fff; transform: translateY(-50%) scale(1.15); }
-        .arrow:active { scale: 0.9; }
-        
+        .arrow:hover { 
+            background: rgba(255,255,255,0.9); 
+            color: #000; 
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 0 30px rgba(255,255,255,0.2);
+        }
         .prev { left: -30px; } .next { right: -30px; }
 
-        /* ТАЙМЕР */
         .timer-btn {
             position: relative; z-index: 100;
-            background: transparent; border: 1px solid rgba(255,255,255,0.6); color: #fff;
-            padding: 16px 45px; cursor: pointer; margin-top: 40px;
-            letter-spacing: 6px; font-size: 0.8rem; transition: 0.4s;
+            background: transparent; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.7);
+            padding: 16px 45px; cursor: pointer; margin: 40px 0;
+            letter-spacing: 6px; font-size: 0.8rem; transition: 0.5s ease;
+            text-transform: uppercase;
         }
-        .timer-btn:hover { background: #fff; color: #000; box-shadow: 0 0 30px rgba(255,255,255,0.3); }
+        .timer-btn:hover { border-color: #fff; color: #fff; background: rgba(255,255,255,0.1); }
 
-        #countdown { font-size: 3.5rem; margin-top: 20px; font-weight: 200; position: relative; z-index: 100; color: #fff; }
+        #countdown { font-size: 4rem; margin: 40px 0; font-weight: 200; position: relative; z-index: 100; color: #fff; }
 
-        /* МОБИЛКИ */
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
             .prev { left: -10px; } .next { right: -10px; }
-            #scroll-page { padding: 60px 14%; min-height: 320px; }
-            .arrow { width: 45px; height: 45px; font-size: 1.5rem; }
+            #scroll-page { padding: 55px 12%; min-height: 280px; }
+            .arrow { width: 45px; height: 45px; background: rgba(255,255,255,0.15); } /* Чуть заметнее на мобилках */
         }
     </style>
 </head>
-<body>
+<body id="main-body">
 
-    <div class="fog"></div>
-
+    <canvas id="fog-canvas"></canvas>
     <h1>СЕНЧА</h1>
 
     <div class="slider-viewport">
         <button class="arrow prev" id="p-btn">‹</button>
         <button class="arrow next" id="n-btn">›</button>
-        
         <div id="scroll-page">
             <h3 id="st-title">ОСНОВА: СЕНЧА</h3>
             <p id="st-text">Бережный паровой прогрев листьев останавливает время, сохраняя 100% натуральный вкус первой страды. Этот метод — сердце японской чайной культуры.</p>
@@ -125,6 +125,7 @@
     <div id="countdown" style="display: none;">90S</div>
 
     <script>
+        // СЛАЙДЕР
         const slides = [
             { t: "ОСНОВА: СЕНЧА", x: "Бережный паровой прогрев листьев останавливает время, сохраняя 100% натуральный вкус первой страды. Этот метод — сердце японской чайной культуры." },
             { t: "АРОМАТ: ТРАВА", x: "Свежескошенный луг и легкие морские нотки — классический профиль японского чая высшего сорта. Каждая капля наполнена энергией весеннего солнца." },
@@ -137,29 +138,21 @@
         const scroll = document.getElementById('scroll-page');
         const stTitle = document.getElementById('st-title');
         const stText = document.getElementById('st-text');
+        const body = document.getElementById('main-body');
 
         function move(d) {
             if (isAnimating) return;
             isAnimating = true;
-
-            // 1. Улетает весь свиток
             const outClass = d > 0 ? 'slide-left' : 'slide-right';
             const prepareClass = d > 0 ? 'slide-prepare-left' : 'slide-prepare-right';
-            
             scroll.classList.add(outClass);
-
             setTimeout(() => {
-                // 2. Меняем контент, пока свиток невидим
                 cur = (cur + d + slides.length) % slides.length;
                 stTitle.innerText = slides[cur].t;
                 stText.innerText = slides[cur].x;
-
-                // 3. Мгновенно переносим свиток на другую сторону
                 scroll.style.transition = 'none';
                 scroll.classList.remove(outClass);
                 scroll.classList.add(prepareClass);
-
-                // 4. Возвращаем свиток на место с анимацией
                 setTimeout(() => {
                     scroll.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease';
                     scroll.classList.remove(prepareClass);
@@ -171,23 +164,91 @@
         document.getElementById('p-btn').onclick = () => move(-1);
         document.getElementById('n-btn').onclick = () => move(1);
 
-        // Таймер
+        // РИТУАЛ
         document.getElementById('ritual-trigger').onclick = function() {
-            this.style.display = 'none';
-            const count = document.getElementById('countdown');
-            count.style.display = 'block';
-            let s = 90;
-            const timer = setInterval(() => {
-                s--; count.innerText = s + "S";
-                if (s <= 0) { 
-                    clearInterval(timer); count.innerText = "ГОТОВО"; 
-                    setTimeout(() => { count.style.display = 'none'; this.style.display = 'inline-block'; }, 3000);
-                }
-            }, 1000);
+            body.classList.add('ritual-active');
+            this.style.opacity = '0';
+            setTimeout(() => {
+                this.style.display = 'none';
+                const count = document.getElementById('countdown');
+                count.style.display = 'block';
+                let s = 90;
+                const timer = setInterval(() => {
+                    s--; count.innerText = s + "S";
+                    if (s <= 0) { 
+                        clearInterval(timer); count.innerText = "ГОТОВО"; 
+                        body.classList.remove('ritual-active');
+                        setTimeout(() => { count.style.display = 'none'; this.style.display = 'inline-block'; this.style.opacity = '1'; }, 3000);
+                    }
+                }, 1000);
+            }, 500);
         };
+
+        // ОПТИМИЗИРОВАННЫЙ ТУМАН
+        const canvas = document.getElementById('fog-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: -500, y: -500 };
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+        window.addEventListener('touchmove', e => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; });
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 200;
+                this.size = Math.random() * 150 + 100; // Частицы крупнее
+                this.speedY = Math.random() * 0.4 + 0.1;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.alpha = 0;
+                this.maxAlpha = Math.random() * 0.15 + 0.05;
+            }
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                if (this.alpha < this.maxAlpha) this.alpha += 0.002;
+                
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 200) {
+                    this.x -= dx * 0.01;
+                    this.y -= dy * 0.01;
+                }
+                if (this.y < -200) this.reset();
+            }
+            draw() {
+                ctx.beginPath();
+                let g = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+                g.addColorStop(0, `rgba(255,255,255,${this.alpha})`);
+                g.addColorStop(1, 'rgba(255,255,255,0)');
+                ctx.fillStyle = g;
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Всего 15 частиц — летает идеально даже на калькуляторах
+        for (let i = 0; i < 15; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
     </script>
 </body>
 </html>
+
 
 
 
