@@ -6,6 +6,45 @@
     <style>
         /* Весь CSS должен быть ТУТ */
         body {
+            .slider-container {
+    position: relative;
+    max-width: 600px;
+    margin: 40px auto;
+    perspective: 1000px; /* Эффект объема */
+}
+
+#scroll-page {
+    background: url('scroll.png') no-repeat center;
+    background-size: contain;
+    min-height: 400px;
+    padding: 80px 100px; /* Чтобы текст не вылезал за края свитка */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #2c1a0a; /* Цвет старых чернил */
+    text-shadow: none;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
+    filter: drop-shadow(0 15px 35px rgba(0,0,0,0.7));
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 100;
+    opacity: 0.5;
+}
+
+.arrow:hover { opacity: 1; text-shadow: 0 0 15px #fff; transform: translateY(-50%) scale(1.2); }
+.prev { left: -70px; }
+.next { right: -70px; }
+
             background: #050505 url('bg.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #d1d1d1;
@@ -49,6 +88,18 @@
     </style>
 </head>
 <body>
+    <div class="slider-container">
+    <button class="arrow prev" onclick="changeSlide(-1)">‹</button>
+    <button class="arrow next" onclick="changeSlide(1)">›</button>
+
+    <div id="scroll-page">
+        <h3 id="slide-title" style="margin-top: 0; font-family: serif; letter-spacing: 2px;">ЛОКАЦИЯ: СИДЗУОКА</h3>
+        <p id="slide-text" style="font-size: 15px; line-height: 1.7; font-style: italic;">
+            Чай выращен у подножия горы Фудзи. Уникальный климат и вулканическая почва создают "холодный" вкус первой страды.
+        </p>
+    </div>
+</div>
+
     <div class="steam-overlay"></div>
     <div class="content">
         <h1>СЕНЧА</h1>
@@ -72,10 +123,45 @@
             display.style.display = 'block';
             setInterval(() => {
                 if (time > 0) { time--; display.innerText = time + 's'; }
-                else { display.innerText = "ОСОЗНАНО"; }
+                else { display.innerText = "ГОТОВО!"; }
             }, 1000);
         }
     </script>
+<script>
+    const slides = [
+        {
+            title: "ЛОКАЦИЯ: СИДЗУОКА",
+            text: "Префектура Сидзуока поставляет 40% всего чая Японии. Плантации находятся на высоте 500м, где туманы защищают листья от солнца."
+        },
+        {
+            title: "МЕТОД: ФУКАМУСИ",
+            text: "Глубокое пропаривание в течение 90 секунд делает лист хрупким, а настой — густым и ярко-зеленым. Это секрет хитбоксов нашего вкуса."
+        },
+        {
+            title: "РИТУАЛ: ВРЕМЯ",
+            text: "Заваривайте 90 секунд при температуре 80°C. Помните: перегрев разрушает осознанность листа. Пейте медленно."
+        }
+    ];
+
+    let currentSlide = 0;
+
+    function changeSlide(direction) {
+        currentSlide = (currentSlide + direction + slides.length) % slides.length;
+        const page = document.getElementById('scroll-page');
+        
+        // Эффект "осознания" при переключении
+        page.style.opacity = 0;
+        page.style.transform = "rotateY(90deg)"; 
+        
+        setTimeout(() => {
+            document.getElementById('slide-title').innerText = slides[currentSlide].title;
+            document.getElementById('slide-text').innerText = slides[currentSlide].text;
+            page.style.opacity = 1;
+            page.style.transform = "rotateY(0deg)";
+        }, 400);
+    }
+</script>
+
 </body>
 </html>
 
