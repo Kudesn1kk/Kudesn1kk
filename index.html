@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SENCHA | ZEN</title>
+    <title>SENCHA | ZEN EXPERIENCE</title>
     <style>
         @import url('https://fonts.googleapis.com');
 
         body {
             background: #0a0a0a url('bg.jpg') no-repeat center center fixed;
             background-size: cover;
-            color: #fff; font-family: 'Noto Serif JP', serif;
-            margin: 0; display: flex; flex-direction: column; align-items: center;
+            color: #fff;
+            font-family: 'Noto Serif JP', serif;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; align-items: center;
             min-height: 100vh; overflow: hidden;
             opacity: 0; animation: pageIn 1.5s forwards;
             touch-action: none;
@@ -22,33 +24,38 @@
         /* ЖИВОЙ ТУМАН */
         #fog-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 2; pointer-events: none; opacity: 0.5; /* Сделал чуть мягче */
+            z-index: 2; pointer-events: none; opacity: 0.5;
         }
 
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); z-index: 1; transition: background 2s ease;
+            background: rgba(0, 0, 0, 0.6); z-index: 1; 
+            transition: background 2s ease; pointer-events: none;
         }
 
         body.ritual-active::before { background: rgba(0, 0, 0, 0.85); }
 
         h1 {
-            font-size: clamp(2.2rem, 8vw, 5rem); letter-spacing: clamp(10px, 3vw, 20px);
+            font-size: clamp(2rem, 8vw, 5rem); letter-spacing: clamp(8px, 3vw, 20px);
             margin: 40px 0 20px; font-weight: 200; position: relative; z-index: 10;
             text-transform: uppercase; text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            pointer-events: none;
         }
 
         .slider-viewport {
             width: 95%; max-width: 700px; position: relative; z-index: 100;
-            perspective: 1200px;
+            perspective: 1200px; margin: auto 0;
         }
 
+        /* СВИТОК */
         #scroll-page {
             background: url('scroll.png') no-repeat center;
             background-size: 100% 100%;
             min-height: clamp(350px, 55vh, 500px);
-            padding: 80px 18%; display: flex; flex-direction: column; justify-content: center;
-            text-align: center; color: #2b1d14; box-sizing: border-box;
+            padding: 80px 18%;
+            display: flex; flex-direction: column; justify-content: center;
+            text-align: center; color: #2b1d14;
+            box-sizing: border-box;
             transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease;
             filter: drop-shadow(0 20px 40px rgba(0,0,0,0.7));
             will-change: transform;
@@ -61,34 +68,39 @@
             50% { transform: scale(1.02); }
         }
 
-        /* СОСТОЯНИЯ ЛИСТАНИЯ */
+        /* АНИМАЦИЯ ЛИСТАНИЯ ЦЕЛОГО СВИТКА */
         .slide-left { transform: translateX(-120%) rotateY(20deg); opacity: 0; }
         .slide-right { transform: translateX(120%) rotateY(-20deg); opacity: 0; }
         .slide-prepare-left { transform: translateX(120%) rotateY(-20deg); opacity: 0; }
         .slide-prepare-right { transform: translateX(-120%) rotateY(20deg); opacity: 0; }
 
-        #slide-title { font-size: clamp(1.1rem, 4vw, 1.4rem); font-weight: 700; margin-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.1); display: inline-block; padding-bottom: 5px; }
-        #slide-text { font-size: clamp(0.85rem, 3.5vw, 1.05rem); line-height: 1.6; font-style: italic; margin: 0; }
+        #slide-title { 
+            font-size: clamp(1.1rem, 4vw, 1.4rem); font-weight: 700; margin-bottom: 12px;
+            border-bottom: 1px solid rgba(0,0,0,0.1); display: inline-block; padding-bottom: 5px;
+        }
 
-        /* СТРЕЛКИ — ТЕПЕРЬ ПРИЗРАЧНЫЕ */
+        #slide-text { 
+            font-size: clamp(0.85rem, 3.5vw, 1.05rem); line-height: 1.6; font-style: italic; margin: 0;
+        }
+
+        /* ПРИЗРАЧНЫЕ СТРЕЛКИ */
         .arrow {
             position: absolute; top: 50%; width: 50px; height: 50px;
-            background: rgba(255,255,255,0.05); /* Почти прозрачные */
-            border: 1px solid rgba(255,255,255,0.2);
-            color: rgba(255,255,255,0.4); 
-            font-size: 1.8rem; cursor: pointer; z-index: 1000; border-radius: 50%;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.4); font-size: 1.8rem; cursor: pointer;
+            z-index: 1000; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             transition: all 0.4s ease; backdrop-filter: blur(2px);
             -webkit-tap-highlight-color: transparent;
         }
         .arrow:hover { 
-            background: rgba(255,255,255,0.9); 
-            color: #000; 
+            background: rgba(255,255,255,0.9); color: #000; 
             transform: translateY(-50%) scale(1.1);
             box-shadow: 0 0 30px rgba(255,255,255,0.2);
         }
         .prev { left: -30px; } .next { right: -30px; }
 
+        /* ТАЙМЕР И КНОПКА */
         .timer-btn {
             position: relative; z-index: 100;
             background: transparent; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.7);
@@ -100,10 +112,15 @@
 
         #countdown { font-size: 4rem; margin: 40px 0; font-weight: 200; position: relative; z-index: 100; color: #fff; }
 
+        /* ФИКС ДЛЯ МОБИЛОК */
         @media (max-width: 600px) {
-            .prev { left: -10px; } .next { right: -10px; }
-            #scroll-page { padding: 55px 12%; min-height: 280px; }
-            .arrow { width: 45px; height: 45px; background: rgba(255,255,255,0.15); } /* Чуть заметнее на мобилках */
+            h1 { margin: 20px 0 10px; font-size: 1.8rem; letter-spacing: 8px; }
+            #scroll-page { padding: 45px 10% 40px; min-height: 260px; }
+            #slide-title { font-size: 0.95rem; margin-bottom: 6px; }
+            #slide-text { font-size: 0.8rem; line-height: 1.35; }
+            .prev { left: 0px; } .next { right: 0px; }
+            .arrow { width: 38px; height: 38px; font-size: 1.2rem; background: rgba(255,255,255,0.15); }
+            .timer-btn { padding: 12px 30px; font-size: 0.7rem; margin-top: 20px; }
         }
     </style>
 </head>
@@ -115,6 +132,7 @@
     <div class="slider-viewport">
         <button class="arrow prev" id="p-btn">‹</button>
         <button class="arrow next" id="n-btn">›</button>
+        
         <div id="scroll-page">
             <h3 id="st-title">ОСНОВА: СЕНЧА</h3>
             <p id="st-text">Бережный паровой прогрев листьев останавливает время, сохраняя 100% натуральный вкус первой страды. Этот метод — сердце японской чайной культуры.</p>
@@ -129,7 +147,7 @@
         const slides = [
             { t: "ОСНОВА: СЕНЧА", x: "Бережный паровой прогрев листьев останавливает время, сохраняя 100% натуральный вкус первой страды. Этот метод — сердце японской чайной культуры." },
             { t: "АРОМАТ: ТРАВА", x: "Свежескошенный луг и легкие морские нотки — классический профиль японского чая высшего сорта. Каждая капля наполнена энергией весеннего солнца." },
-            { t: "ПОКОЙ: ДЗЭН", x: "Минута созерцания раскрывающегося листа дарит абсолютную ясность ума. Позвольте суете раствориться в мягком паре свежезаваренного настоя." },
+            { t: "ПОКОЙ: ДЗЭН", x: "Минута созерцания раскрывающегося листа дарит абсолютную ясность ума. Позвольте суете раствориться в мягком паре свежезаваренного насто." },
             { t: "ВКУС: УМАМИ", x: "Глубокий, слегка сладковатый вкус с благородной горчинкой в послевкусии. Сенча не просто бодрит, она настраивает внутренний резонанс." }
         ];
         
@@ -145,7 +163,9 @@
             isAnimating = true;
             const outClass = d > 0 ? 'slide-left' : 'slide-right';
             const prepareClass = d > 0 ? 'slide-prepare-left' : 'slide-prepare-right';
+            
             scroll.classList.add(outClass);
+
             setTimeout(() => {
                 cur = (cur + d + slides.length) % slides.length;
                 stTitle.innerText = slides[cur].t;
@@ -153,6 +173,7 @@
                 scroll.style.transition = 'none';
                 scroll.classList.remove(outClass);
                 scroll.classList.add(prepareClass);
+
                 setTimeout(() => {
                     scroll.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease';
                     scroll.classList.remove(prepareClass);
@@ -178,7 +199,12 @@
                     if (s <= 0) { 
                         clearInterval(timer); count.innerText = "ГОТОВО"; 
                         body.classList.remove('ritual-active');
-                        setTimeout(() => { count.style.display = 'none'; this.style.display = 'inline-block'; this.style.opacity = '1'; }, 3000);
+                        setTimeout(() => { 
+                            count.style.display = 'none'; 
+                            this.style.display = 'inline-block'; 
+                            this.style.opacity = '1'; 
+                            count.innerText = "90S";
+                        }, 3000);
                     }
                 }, 1000);
             }, 500);
@@ -205,7 +231,7 @@
             reset() {
                 this.x = Math.random() * canvas.width;
                 this.y = canvas.height + Math.random() * 200;
-                this.size = Math.random() * 150 + 100; // Частицы крупнее
+                this.size = Math.random() * 150 + 100;
                 this.speedY = Math.random() * 0.4 + 0.1;
                 this.speedX = (Math.random() - 0.5) * 0.3;
                 this.alpha = 0;
@@ -215,14 +241,10 @@
                 this.y -= this.speedY;
                 this.x += this.speedX;
                 if (this.alpha < this.maxAlpha) this.alpha += 0.002;
-                
                 let dx = mouse.x - this.x;
                 let dy = mouse.y - this.y;
                 let dist = Math.sqrt(dx*dx + dy*dy);
-                if (dist < 200) {
-                    this.x -= dx * 0.01;
-                    this.y -= dy * 0.01;
-                }
+                if (dist < 200) { this.x -= dx * 0.01; this.y -= dy * 0.01; }
                 if (this.y < -200) this.reset();
             }
             draw() {
@@ -236,7 +258,6 @@
             }
         }
 
-        // Всего 15 частиц — летает идеально даже на калькуляторах
         for (let i = 0; i < 15; i++) particles.push(new Particle());
 
         function animate() {
@@ -248,6 +269,7 @@
     </script>
 </body>
 </html>
+
 
 
 
