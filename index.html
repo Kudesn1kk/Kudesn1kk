@@ -3,121 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SENCHA | AWARENESS</title>
+    <title>SENCHA | ZEN</title>
     <style>
         @import url('https://fonts.googleapis.com');
 
         body {
-            background: #1a1a1a url('bg.jpg') no-repeat center center fixed;
+            background: #0a0a0a url('bg.jpg') no-repeat center center fixed;
             background-size: cover;
-            color: #2b2b2b;
+            color: #fff;
             font-family: 'Noto Serif JP', serif;
             margin: 0; display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; overflow-x: hidden;
+            min-height: 100vh; overflow: hidden;
+            opacity: 0; animation: pageIn 1.5s forwards;
         }
 
-        /* ЗАТЕМНЕНИЕ ФОНА (НЕ БЛОКИРУЕТ КЛИКИ) */
+        @keyframes pageIn { to { opacity: 1; } }
+
+        /* ГЛУБОКОЕ ЗАТЕМНЕНИЕ */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4); 
-            z-index: 1; 
-            pointer-events: none; /* ГЛАВНЫЙ ФИКС ДЛЯ КНОПОК */
+            background: rgba(0, 0, 0, 0.6); z-index: 1; pointer-events: none;
+        }
+
+        .fog {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 30%;
+            background: linear-gradient(to top, rgba(255,255,255,0.1), transparent);
+            z-index: 2; pointer-events: none;
         }
 
         h1 {
-            font-size: clamp(3rem, 10vw, 5rem); letter-spacing: 20px;
-            color: #fff; margin: 40px 0; font-weight: 200;
-            text-shadow: 0 0 20px rgba(0,0,0,0.5); text-transform: uppercase;
-            position: relative; z-index: 10;
+            font-size: clamp(2.5rem, 8vw, 5rem); letter-spacing: clamp(10px, 3vw, 20px);
+            margin: 40px 0 20px; font-weight: 200; position: relative; z-index: 10;
+            text-transform: uppercase; text-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
 
-        .slider-container {
-            width: 95%; max-width: 700px; margin: 20px auto;
-            position: relative; z-index: 10;
+        /* КОНТЕЙНЕР ДЛЯ ЛИСТАНИЯ */
+        .slider-viewport {
+            width: 95%; max-width: 700px; position: relative; z-index: 100;
+            perspective: 1200px; /* Добавляем глубину */
         }
 
-        /* ТВОЙ СВИТОК */
+        /* ВЕСЬ СВИТОК КАК ЕДИНЫЙ ОБЪЕКТ */
         #scroll-page {
             background: url('scroll.png') no-repeat center;
-            background-size: contain;
-            min-height: 400px;
-            padding: 80px 20%;
+            background-size: 100% 100%;
+            min-height: clamp(350px, 55vh, 500px);
+            padding: 80px 18%;
             display: flex; flex-direction: column; justify-content: center;
-            text-align: center;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            filter: drop-shadow(0 15px 40px rgba(0,0,0,0.6));
+            text-align: center; color: #2b1d14; /* Темный текст внутри */
+            box-sizing: border-box;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.7));
+            will-change: transform, opacity;
         }
 
-        #slide-title { font-size: 1.3rem; margin-bottom: 10px; color: #2b1d14; font-weight: bold; border-bottom: 1px solid rgba(0,0,0,0.1); display: inline-block; }
-        #slide-text { font-size: 0.9rem; line-height: 1.6; color: #3e2723; font-style: italic; }
+        /* СОСТОЯНИЯ ДЛЯ АНИМАЦИИ (ВЕСЬ БЛОК УЛЕТАЕТ) */
+        .slide-left { transform: translateX(-120%) rotateY(20deg); opacity: 0; }
+        .slide-right { transform: translateX(120%) rotateY(-20deg); opacity: 0; }
+        .slide-prepare-left { transform: translateX(120%) rotateY(-20deg); opacity: 0; }
+        .slide-prepare-right { transform: translateX(-120%) rotateY(20deg); opacity: 0; }
 
-        /* СТРЕЛКИ (Z-INDEX 9999) */
+        #slide-title { 
+            font-size: clamp(1.1rem, 4vw, 1.5rem); font-weight: 700; margin-bottom: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.1); display: inline-block; padding-bottom: 5px;
+        }
+
+        #slide-text { 
+            font-size: clamp(0.9rem, 3.5vw, 1.1rem); line-height: 1.7; font-style: italic; margin: 0;
+        }
+
+        /* КНОПКИ */
         .arrow {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            background: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.5);
-            color: #fff; font-size: 2.5rem; cursor: pointer;
-            z-index: 9999; /* ВЫШЕ ВСЕХ СЛОЕВ */
-            width: 50px; height: 50px; border-radius: 50%;
+            position: absolute; top: 50%; width: 55px; height: 55px;
+            background: rgba(255,255,255,0.9); border: none; color: #000;
+            font-size: 2rem; cursor: pointer; z-index: 1000; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             transition: 0.3s; backdrop-filter: blur(5px);
-            user-select: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
         }
-        .arrow:hover { background: #fff; color: #000; scale: 1.1; }
-        .prev { left: -25px; } .next { right: -25px; }
+        .arrow:hover { background: #fff; transform: translateY(-50%) scale(1.15); }
+        .arrow:active { scale: 0.9; }
+        
+        .prev { left: -30px; } .next { right: -30px; }
 
-        /* КНОПКА РИТУАЛА */
+        /* ТАЙМЕР */
         .timer-btn {
-            position: relative; z-index: 9999;
-            background: none; border: 1px solid #fff; color: #fff;
-            padding: 15px 40px; cursor: pointer; margin-top: 30px;
-            letter-spacing: 5px; font-size: 0.9rem; transition: 0.5s;
-            text-transform: uppercase;
+            position: relative; z-index: 100;
+            background: transparent; border: 1px solid rgba(255,255,255,0.6); color: #fff;
+            padding: 16px 45px; cursor: pointer; margin-top: 40px;
+            letter-spacing: 6px; font-size: 0.8rem; transition: 0.4s;
         }
-        .timer-btn:hover { background: #fff; color: #000; box-shadow: 0 0 30px #fff; }
+        .timer-btn:hover { background: #fff; color: #000; box-shadow: 0 0 30px rgba(255,255,255,0.3); }
 
-        #countdown { font-size: 3rem; color: #fff; margin-top: 20px; font-weight: 200; letter-spacing: 10px; position: relative; z-index: 9999; }
+        #countdown { font-size: 3.5rem; margin-top: 20px; font-weight: 200; position: relative; z-index: 100; color: #fff; }
+
+        /* МОБИЛКИ */
+        @media (max-width: 768px) {
+            .prev { left: -10px; } .next { right: -10px; }
+            #scroll-page { padding: 60px 14%; min-height: 320px; }
+            .arrow { width: 45px; height: 45px; font-size: 1.5rem; }
+        }
     </style>
 </head>
 <body>
+
+    <div class="fog"></div>
+
     <h1>СЕНЧА</h1>
 
-    <div class="slider-container">
-        <button class="arrow prev" onclick="changeSlide(-1)">‹</button>
-        <button class="arrow next" onclick="changeSlide(1)">›</button>
+    <div class="slider-viewport">
+        <button class="arrow prev" id="p-btn">‹</button>
+        <button class="arrow next" id="n-btn">›</button>
+        
         <div id="scroll-page">
-            <h3 id="slide-title">ОСНОВА: СЕНЧА</h3>
-            <p id="slide-text">Бережный паровой прогрев листьев останавливает время, сохраняя 100% натуральный вкус первой страды.</p>
+            <h3 id="st-title">ОСНОВА: СЕНЧА</h3>
+            <p id="st-text">Бережный паровой прогрев листьев останавливает время, сохраняя 100% натуральный вкус первой страды. Этот метод — сердце японской чайной культуры.</p>
         </div>
     </div>
 
-    <button class="timer-btn" onclick="startTimer()">РИТУАЛ</button>
+    <button class="timer-btn" id="ritual-trigger">РИТУАЛ</button>
     <div id="countdown" style="display: none;">90S</div>
 
     <script>
-        const slides =;
+        const slides = [
+            { t: "ОСНОВА: СЕНЧА", x: "Бережный паровой прогрев листьев останавливает время, сохраняя 100% натуральный вкус первой страды. Этот метод — сердце японской чайной культуры." },
+            { t: "АРОМАТ: ТРАВА", x: "Свежескошенный луг и легкие морские нотки — классический профиль японского чая высшего сорта. Каждая капля наполнена энергией весеннего солнца." },
+            { t: "ПОКОЙ: ДЗЭН", x: "Минута созерцания раскрывающегося листа дарит абсолютную ясность ума. Позвольте суете раствориться в мягком паре свежезаваренного настоя." },
+            { t: "ВКУС: УМАМИ", x: "Глубокий, слегка сладковатый вкус с благородной горчинкой в послевкусии. Сенча не просто бодрит, она настраивает внутренний резонанс." }
+        ];
+        
         let cur = 0;
-        function changeSlide(d) {
-            cur = (cur + d + slides.length) % slides.length;
-            const p = document.getElementById('scroll-page');
-            p.style.opacity = 0;
+        let isAnimating = false;
+        const scroll = document.getElementById('scroll-page');
+        const stTitle = document.getElementById('st-title');
+        const stText = document.getElementById('st-text');
+
+        function move(d) {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            // 1. Улетает весь свиток
+            const outClass = d > 0 ? 'slide-left' : 'slide-right';
+            const prepareClass = d > 0 ? 'slide-prepare-left' : 'slide-prepare-right';
+            
+            scroll.classList.add(outClass);
+
             setTimeout(() => {
-                document.getElementById('slide-title').innerText = slides[cur].title;
-                document.getElementById('slide-text').innerText = slides[cur].text;
-                p.style.opacity = 1;
-            }, 300);
+                // 2. Меняем контент, пока свиток невидим
+                cur = (cur + d + slides.length) % slides.length;
+                stTitle.innerText = slides[cur].t;
+                stText.innerText = slides[cur].x;
+
+                // 3. Мгновенно переносим свиток на другую сторону
+                scroll.style.transition = 'none';
+                scroll.classList.remove(outClass);
+                scroll.classList.add(prepareClass);
+
+                // 4. Возвращаем свиток на место с анимацией
+                setTimeout(() => {
+                    scroll.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease';
+                    scroll.classList.remove(prepareClass);
+                    isAnimating = false;
+                }, 50);
+            }, 500);
         }
-        function startTimer() {
-            let t = 90;
-            const d = document.getElementById('countdown');
-            d.style.display = 'block';
-            document.querySelector('.timer-btn').style.display = 'none';
-            const i = setInterval(() => {
-                t--; d.innerText = t + "S";
-                if (t <= 0) { clearInterval(i); d.innerText = "ГОТОВО"; }
+
+        document.getElementById('p-btn').onclick = () => move(-1);
+        document.getElementById('n-btn').onclick = () => move(1);
+
+        // Таймер
+        document.getElementById('ritual-trigger').onclick = function() {
+            this.style.display = 'none';
+            const count = document.getElementById('countdown');
+            count.style.display = 'block';
+            let s = 90;
+            const timer = setInterval(() => {
+                s--; count.innerText = s + "S";
+                if (s <= 0) { 
+                    clearInterval(timer); count.innerText = "ГОТОВО"; 
+                    setTimeout(() => { count.style.display = 'none'; this.style.display = 'inline-block'; }, 3000);
+                }
             }, 1000);
-        }
+        };
     </script>
 </body>
 </html>
+
+
+
+
+
+
 
 
