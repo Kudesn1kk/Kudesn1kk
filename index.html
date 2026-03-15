@@ -3,173 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SENCHA | AWARENESS</title>
+    <title>KAOLIN | THE SPIRIT</title>
     <style>
         @import url('https://fonts.googleapis.com');
 
         /* БАЗА И ФОН */
         body {
-            background: #000 url('bg.jpg') no-repeat center center fixed;
+            background: #0a0f0a url('bg_dota.jpg') no-repeat center center fixed;
             background-size: cover;
-            color: #e0e0e0;
-            font-family: 'Noto Serif JP', serif;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
             margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
             overflow-x: hidden;
-            text-align: center;
+            text-transform: uppercase;
         }
 
-        /* ЯПОНСКИЙ ВАЙБ НА ФОНЕ */
+        /* КОМИКСНАЯ СЕТКА И ЗАТЕМНЕНИЕ */
         body::before {
-            content: "煎茶";
-            position: fixed;
-            top: 5%; right: 5%;
-            font-size: clamp(5rem, 20vw, 15rem);
-            color: rgba(255, 255, 255, 0.03);
-            z-index: -1;
-            writing-mode: vertical-rl;
-            pointer-events: none;
-        }
-
-        /* ЗАТЕМНЕНИЕ ЛАНДШАФТА */
-        body::after {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8));
-            z-index: -2;
+            background: radial-gradient(circle, transparent 20%, #000 90%), 
+                        url('https://www.transparenttextures.com');
+            opacity: 0.8; z-index: -2;
         }
 
-        /* ЭФФЕКТ ПАРА / ДЫМА */
-        .steam-overlay {
+        /* ПУЛЬСАЦИЯ ЧАСТИЦ (EARTH SPIRIT VIBE) */
+        .particles {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 120%, rgba(255,255,255,0.1), transparent 60%);
-            filter: blur(60px); z-index: -1; 
-            animation: steamFloat 12s infinite alternate ease-in-out;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 255, 100, 0.08), transparent 60%);
+            z-index: -1; animation: pulse 4s infinite alternate;
             pointer-events: none;
         }
-        @keyframes steamFloat { 
-            0% { opacity: 0.3; transform: scale(1); } 
-            100% { opacity: 0.6; transform: scale(1.1) translateY(-2%); } 
-        }
+        @keyframes pulse { from { opacity: 0.3; } to { opacity: 0.6; } }
 
         .container {
-            width: 95%; max-width: 750px; padding: 20px;
+            width: 95%; max-width: 850px; padding: 20px;
             margin-top: 5vh; z-index: 10;
         }
 
         h1 {
-            font-size: clamp(2rem, 10vw, 3.5rem);
-            letter-spacing: clamp(10px, 4vw, 25px);
-            margin-bottom: 20px;
-            font-weight: 200;
-            color: #fff;
-            text-transform: uppercase;
+            font-family: 'Bangers', cursive;
+            font-size: clamp(3.5rem, 12vw, 6.5rem);
+            color: #00ff64;
+            text-shadow: 5px 5px 0px #000, 0 0 25px rgba(0, 255, 100, 0.6);
+            margin: 0;
+            transform: rotate(-3deg);
+            letter-spacing: 5px;
         }
 
-        /* СЛАЙДЕР СО СКРУЧЕННОЙ БУМАГОЙ */
-        .slider-container { position: relative; width: 100%; margin: 20px 0; perspective: 1200px; }
+        /* КАМЕННАЯ ПЛИТА (REMNANT) */
+        .slider-container { position: relative; width: 100%; margin: 30px 0; }
 
         #scroll-page {
-            background: url('scroll.png') no-repeat center;
+            background: url('stone.png') no-repeat center;
             background-size: contain;
             min-height: clamp(350px, 60vh, 500px);
-            /* ОТСТУПЫ: 25% по бокам, чтобы текст не заходил на "завороты" бумаги */
-            padding: 10% 25%;
+            /* ОТСТУПЫ: чтобы текст сидел внутри трещин твоей плиты */
+            padding: 10% 18%;
             display: flex; flex-direction: column; justify-content: center;
             
-            /* ЦВЕТ ТЕКСТА: ТЕМНАЯ ТУШЬ */
-            color: #2b231d;
-            text-shadow: 0.3px 0.3px 0px rgba(255,255,255,0.2);
-            transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s;
-            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8));
+            /* ТЕКСТ: НЕОНОВЫЙ ЗЕЛЕНЫЙ */
+            color: #00ff64;
+            text-shadow: 2px 2px 0px #000, 0 0 10px rgba(0, 255, 100, 0.4);
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.9));
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
         }
 
-        #slide-title { font-size: clamp(1rem, 4vw, 1.4rem); margin-bottom: 10px; font-weight: 700; letter-spacing: 1px; }
-        #slide-text { font-size: clamp(0.8rem, 3vw, 1rem); line-height: 1.6; font-weight: 400; font-style: italic; }
+        #slide-title { font-size: clamp(1.2rem, 5vw, 1.8rem); margin-bottom: 10px; border-bottom: 2px solid #00ff64; display: inline-block; }
+        #slide-text { font-size: clamp(0.85rem, 3vw, 1.05rem); line-height: 1.4; color: #fff; font-weight: 900; }
 
-        /* МИНИМАЛИСТИЧНЫЕ СТРЕЛКИ */
+        /* КНОПКИ-СТРЕЛКИ (COMIC STYLE) */
         .arrow {
             position: absolute; top: 50%; transform: translateY(-50%);
-            background: none; border: none; color: #fff; font-size: 3rem;
-            cursor: pointer; z-index: 20; opacity: 0.3; transition: 0.4s;
+            background: #00ff64; border: 4px solid #000; color: #000; font-family: 'Bangers';
+            font-size: 2.5rem; cursor: pointer; z-index: 20; padding: 0 20px;
+            box-shadow: 6px 6px 0px #000; transition: 0.2s;
             user-select: none;
         }
-        .arrow:hover { opacity: 1; transform: translateY(-50%) scale(1.2); text-shadow: 0 0 20px #fff; }
-        .prev { left: -10px; } .next { right: -10px; }
+        .arrow:hover { background: #fff; transform: translateY(-50%) scale(1.1); box-shadow: 3px 3px 0px #000; }
+        .arrow:active { transform: translateY(-50%) translate(2px, 2px); box-shadow: 1px 1px 0px #000; }
+        .prev { left: -15px; } .next { right: -15px; }
 
-        /* КНОПКА РИТУАЛА */
+        /* КНОПКА ТАЙМЕРА (ULTIMATE) */
         .timer-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: #fff;
-            padding: 18px 40px;
-            cursor: pointer;
-            margin-top: 20px;
-            letter-spacing: 5px;
-            font-size: 0.8rem;
-            transition: 0.5s;
-            backdrop-filter: blur(5px);
-            text-transform: uppercase;
+            background: #00ff64; border: 5px solid #000; color: #000;
+            padding: 20px 40px; cursor: pointer; margin-top: 20px;
+            font-family: 'Bangers'; font-size: 1.8rem; letter-spacing: 3px;
+            box-shadow: 10px 10px 0px #000; transition: 0.2s;
+            width: 100%; max-width: 350px;
         }
+        .timer-btn:hover { background: #fff; transform: translate(-4px, -4px); box-shadow: 14px 14px 0px #000; }
+        .timer-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px #000; }
 
-        .timer-btn:hover {
-            background: rgba(255,255,255,0.15);
-            border-color: #fff;
-            box-shadow: 0 0 30px rgba(255,255,255,0.1);
-            letter-spacing: 8px;
-        }
-
-        #countdown { font-size: 3rem; margin-top: 20px; font-weight: 200; letter-spacing: 10px; }
+        #countdown { font-family: 'Bangers'; font-size: 5rem; color: #00ff64; margin-top: 20px; text-shadow: 4px 4px 0px #000; }
     </style>
 </head>
 <body>
-    <div class="steam-overlay"></div>
+    <div class="particles"></div>
     
     <div class="container">
-        <h1>СЕНЧА</h1>
+        <h1>EARTH SPIRIT</h1>
 
         <div class="slider-container">
             <button class="arrow prev" onclick="changeSlide(-1)">‹</button>
             <button class="arrow next" onclick="changeSlide(1)">›</button>
             <div id="scroll-page">
-                <h3 id="slide-title">РИТУАЛ: ВКУС</h3>
-                <p id="slide-text">Сенча первой страды имеет баланс сладости и терпкости. Это вкус 'Умами', который нужно осознать.</p>
+                <h3 id="slide-title">ABILITY: GEOMAGNETIC GRIP</h3>
+                <p id="slide-text">Каолин притягивает каменную копию. Враги на пути получают безмолвие. Осознай силу контроля и доминируй.</p>
             </div>
         </div>
 
-        <button class="timer-btn" onclick="startTimer()">РИТУАЛ ЗАВАРИВАНИЯ</button>
-        <div id="countdown" style="display: none;">90s</div>
+        <button class="timer-btn" onclick="startTimer()">ACTIVATE REMNANT</button>
+        <div id="countdown" style="display: none;">90S</div>
     </div>
 
     <script>
         const slides =;
-        let cur = 2;
+        let cur = 0;
         function changeSlide(d) {
             cur = (cur + d + slides.length) % slides.length;
             const p = document.getElementById('scroll-page');
+            p.style.transform = "skewX(12deg) scale(0.9)";
             p.style.opacity = 0;
-            p.style.transform = "rotateY(20deg) scale(0.95)";
             setTimeout(() => {
                 document.getElementById('slide-title').innerText = slides[cur].title;
                 document.getElementById('slide-text').innerText = slides[cur].text;
+                p.style.transform = "skewX(0deg) scale(1)";
                 p.style.opacity = 1;
-                p.style.transform = "rotateY(0deg) scale(1)";
-            }, 450);
+            }, 250);
         }
         function startTimer() {
             let t = 90;
             const d = document.getElementById('countdown');
             d.style.display = 'block';
             const i = setInterval(() => {
-                t--; d.innerText = t + 's';
-                if (t <= 0) { clearInterval(i); d.innerText = "ОСОЗНАНО"; }
+                t--; d.innerText = t + "S";
+                if (t <= 0) { clearInterval(i); d.innerText = "MAGNETIZED"; }
             }, 1000);
         }
     </script>
 </body>
 </html>
+
 
 
 
